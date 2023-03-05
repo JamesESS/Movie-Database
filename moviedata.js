@@ -37,57 +37,97 @@ let movieData = {
 
 
 // Can I allow for new properties in object while keeping preffered order?? Want to add star rating and seen already 
-const movieDataProperties = ["plot", "cast", "rating", "runtime", "year"]
+var movieDataProperties = ["plot", "cast", "rating", "runtime", "year"]
+
+//initialise dom variables
+const listAllButton = document.getElementById("listallbutton");
+const newFilmButton = document.getElementById("newfilmbutton");
+const randomFilmButton = document.getElementById("randomfilmbutton");
+
+var randomMovieDiv = document.getElementById("randommoviediv");
+var listAllDiv = document.getElementById("listalldiv");
+var newFilmDiv = document.getElementById("newfilmdiv");
+
+var randomMovie = document.getElementById("randommovietitle");
+var randomMovList = document.getElementById("randommovielist");
+var allTitlesUl = document.getElementById("alltitlesul");
+var listAllTitle = document.getElementById("listalltitle");
+
+randomFilmButton.addEventListener("click", randomFilmFunc);
+listAllButton.addEventListener("click", listAllFunc);
+newFilmButton.addEventListener("click", newFilmFunc);
 
 
-var pMovie = document.getElementById("movie");
-var button = document.getElementById("button1");
-var movList = document.getElementById("list");
-var showAll = document.getElementById("filmheader");
-button.addEventListener("click", randomFilm);
-showAll.addEventListener("mouseover", randomFilm);
+
+//-----RANDOM FILM BUTTON FUNCTIONS-----
 
 /* conditional on button press generate random number 
 then pick film based on rndm number */
-
-function randomFilm() {
-    pMovie.textContent = " ";
-    movList.textContent= " ";
+function randomFilmFunc() {
+    clearAll();
     let movieArray = Object.keys(movieData);
     let sampleSize = movieArray.length;
     let randomInteger = Math.floor(Math.random()*sampleSize);
     var tester = "filmtitle " + String(movieData[movieArray[randomInteger]]); 
-    pMovie.textContent = movieArray[randomInteger];
+    randomMovie.textContent = movieArray[randomInteger];
     filmChoice(movieArray[randomInteger]); 
 }
-
-/* object output function */
+/* lists properties of given (random) film */
 function filmChoice(title) {
   // iterate through film object with given title and output in list
   for (i = 0; i < Object.keys(movieData[title]).length; i++) {
     //current method doesn't account for object entries - can that be done neatly?
-/*     
-      CURRENT WORKING METHOD
 
-    var movieDetails = document.getElementById("li"+i);
-    movieDetails.innerText = (movieDataProperties[i] + ": " + movieData[title][movieDataProperties[i]]);
-
-     */
-
-    //attempt with dynamically created list
-    //var movieDelete = document.getElementById("li"+i);
-    //movieDelete.remove();
     var movieDetails = document.createElement("li");
-    movieDetails.setAttribute("id", "li" + i);
-    document.getElementById("list").appendChild(movieDetails);
+    movieDetails.setAttribute("id", "randommovielist" + i);
+    document.getElementById("randommovielist").appendChild(movieDetails);
+    movieDetails.innerText = (movieDataProperties[i] + ": " + movieData[title][movieDataProperties[i]]);
+  }
+}
+
+function listAllFunc() {
+  clearAll();
+  let movieArray = Object.keys(movieData);
+  for (i = 0; i < movieArray.length; i++) {
+    var movieTitle = document.createElement("li");
+    movieTitle.setAttribute("id", "alltitles" + i);
+    allTitlesUl.appendChild(movieTitle);
+    movieTitle.innerText = (movieArray[i]);
+    movieTitle.addEventListener("click", listAllDetails);
+  }
+}
+
+function listAllDetails() {
+  var title =  this.innerText;
+  clearAll();
+  listAllTitle.innerText = (title);
+  for (i = 0; i < Object.keys(movieData[title]).length; i++) {
+    //current method doesn't account for object entries - can that be done neatly?
+    
+    var movieDetails = document.createElement("li");
+    movieDetails.setAttribute("id", "alltitlesproperties" + i);
+    allTitlesUl.appendChild(movieDetails);
     movieDetails.innerText = (movieDataProperties[i] + ": " + movieData[title][movieDataProperties[i]]);
   }
 }
 
 
+function clearAll() {
+  allTitlesUl.textContent = " ";
+  randomMovie.textContent = " ";
+  randomMovList.textContent = " ";
+  listAllTitle.textContent = " ";
+}
+
+
+function newFilmFunc() {
+  clearAll();
+}
+
 /* TO DO!!
 -user star rating
 -already seen tag
--make functions more specific i.e. output function, rndm number generator, etc etc
+-make functions more specific i.e. output function, rndm number generator, initialise variable used in multiple places to send on etc etc
 -add forms
+-sort by rating, alphabetical, runtime....
 */

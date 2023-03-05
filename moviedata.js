@@ -43,6 +43,8 @@ var movieDataProperties = ["plot", "cast", "rating", "runtime", "year"]
 const listAllButton = document.getElementById("listallbutton");
 const newFilmButton = document.getElementById("newfilmbutton");
 const randomFilmButton = document.getElementById("randomfilmbutton");
+const newFilmFormSubmit = document.getElementById("newfilmform");
+const newFilmProperties = document.getElementsByClassName("filmsubmitclass");
 
 var randomMovieDiv = document.getElementById("randommoviediv");
 var listAllDiv = document.getElementById("listalldiv");
@@ -56,10 +58,9 @@ var listAllTitle = document.getElementById("listalltitle");
 randomFilmButton.addEventListener("click", randomFilmFunc);
 listAllButton.addEventListener("click", listAllFunc);
 newFilmButton.addEventListener("click", newFilmFunc);
+newFilmFormSubmit.addEventListener("submit", submitNewFilmFunc,false);
 
-
-
-//-----RANDOM FILM BUTTON FUNCTIONS-----
+/*-----RANDOM FILM BUTTON FUNCTIONS-----*/
 
 /* conditional on button press generate random number 
 then pick film based on rndm number */
@@ -85,20 +86,25 @@ function filmChoice(title) {
   }
 }
 
+/* -----LIST ALL FILMS BUTTON FUNCTIONS----- */
+
+/* Lists titles of all films in database and sets up to list details of a chosen title */
 function listAllFunc() {
   clearAll();
   let movieArray = Object.keys(movieData);
   for (i = 0; i < movieArray.length; i++) {
     var movieTitle = document.createElement("li");
-    movieTitle.setAttribute("id", "alltitles" + i);
+    movieTitle.setAttribute("id", "alltitles" + i); //id's are never used possibly redundant?
     allTitlesUl.appendChild(movieTitle);
     movieTitle.innerText = (movieArray[i]);
     movieTitle.addEventListener("click", listAllDetails);
   }
 }
 
+
+/* Shows details for chosen film from list of all films */
 function listAllDetails() {
-  var title =  this.innerText;
+  var title =  this.innerText; //saves title of chosen film (text of element that triggered on click event)
   clearAll();
   listAllTitle.innerText = (title);
   for (i = 0; i < Object.keys(movieData[title]).length; i++) {
@@ -111,19 +117,45 @@ function listAllDetails() {
   }
 }
 
+/* -----NEW FILM FORM BUTTON FUNCTIONS----- */
 
+/* makes newfilm form visible on page */
+function newFilmFunc() {
+  clearAll();
+  newFilmDiv.removeAttribute("class", "hideme");
+}
+
+
+/* Make submit button store new film as an object, then add object to main movie object */ 
+function submitNewFilmFunc(Event) {
+  Event.preventDefault();   //stops submit button refreshing page and sending data
+  alert("Thanks for adding a new film " + newFilmProperties[0].value);
+  let newTitleObject = { };
+  let newTitle = newFilmProperties[0].value;
+  //store each form input (-title) in object 
+  for (i = 1; i < newFilmProperties.length; i++){
+    //make i == 1 (cast) store each actor as seperate entry in an array?
+    var j = i-1;
+    newTitleObject[movieDataProperties[j]] = newFilmProperties[i].value;
+    console.log(newFilmProperties[i]);
+    newFilmProperties[i].value = "";  //reset form inputs to placeholder values
+  }
+  movieData[newTitle] = newTitleObject; 
+  newFilmProperties[0] = ""; //reset form inputs to placeholder values
+  clearAll();
+
+  //could be cleaned up definetly some redundant/unnecesary variables in here
+}
+
+/* -----Universal functions----- */
+/* resets page to original content */
 function clearAll() {
   allTitlesUl.textContent = " ";
   randomMovie.textContent = " ";
   randomMovList.textContent = " ";
   listAllTitle.textContent = " ";
+  newFilmDiv.setAttribute("class", "hideme"); //stops new film form displaying
 }
-
-
-function newFilmFunc() {
-  clearAll();
-}
-
 /* TO DO!!
 -user star rating
 -already seen tag

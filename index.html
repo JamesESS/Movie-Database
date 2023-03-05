@@ -3,17 +3,17 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="my-styles.css" rel="stylesheet">
+        <link href="mystyles.css" rel="stylesheet">
         <title>Movie database</title>
     </head>
     <body>
-        <div>
-            <button id="listallbutton" class="mainbutton">List all films</button>
-            <button id="randomfilmbutton" class="mainbutton">Random film</button>
-            <button id="newfilmbutton" class="mainbutton">Add new film</button>    
-
+        <header>
+        <div class="mainbuttonparent">
+            <p id="listallbutton" class="mainbutton">List all films</p>
+            <p id="randomfilmbutton" class="mainbutton">Random film</p>
+            <p id="newfilmbutton" class="mainbutton">Add new film</p>    
         </div>
-
+        </header>
         <div id="randommoviediv">
             <h1 id="randommovietitle" class="movietitle">                
             </h1>
@@ -24,7 +24,22 @@
                 <h1 id="listalltitle"></h1>
                 <ul id="alltitlesul" style="list-style: none; padding: 0%; margin: 0%;"></ul>
         </div>
-        <div id="newfilmdiv">
+        <div id="newfilmdiv" class="hideme">
+            <form action="" id="newfilmform">
+                <label for="filmtitle">Title: </label><br>
+                <input type="text" id="filmtitle" class="filmsubmitclass" name="filmtitle" placeholder="The Darjeeling Limited"><br>
+                <label for="filmplot">Plot: </label><br>
+                <textarea type="text" id="filmplot" class="filmsubmitclass" name="filmplot" rows="7" cols="30" placeholder="A year after their father's funeral, three brothers travel across India by train in an attempt to bond with each other."></textarea><br>
+                <label for="filmcast">Cast: </label><br>
+                <textarea type="text" id="filmcast" class="filmsubmitclass" name="filmcast" rows="7" cols="30" placeholder="Jason Schwartzman, Owen Wilson, Adrien Brody"></textarea><br>
+                <label for="filmrating">Rating: </label><br>
+                <input type="text" id="filmrating" class="filmsubmitclass" name="filmrating" placeholder="7.2"><br>               
+                <label for="filmruntime">Runtime: </label><br>
+                <input type="text" id="filmruntime" class="filmsubmitclass" name="filmruntime" placeholder="151"><br>
+                <label for="filmyear">Year: </label><br>
+                <input type="text" id="filmyear" class="filmsubmitclass" name="filmyear" placeholder="2007"><br>
+                <button type="submit" id="newfilmsubmit">Add Film</button>
+            </form>
 
         </div>
         

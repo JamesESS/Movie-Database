@@ -141,9 +141,9 @@ function submitNewFilmFunc(Event) {
     newFilmProperties[i].value = "";  //reset form inputs to placeholder values
   }
   movieData[newTitle] = newTitleObject; 
-  newFilmProperties[0] = ""; //reset form inputs to placeholder values
+  newFilmProperties[0].value = ""; //reset form inputs to placeholder values
   clearAll();
-
+  //Ideally add data sanitization and refuse incorrectly formated data
   //could be cleaned up definetly some redundant/unnecesary variables in here
 }
 

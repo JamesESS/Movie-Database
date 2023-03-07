@@ -94,10 +94,22 @@ function listAllFunc() {
   let movieArray = Object.keys(movieData);
   for (i = 0; i < movieArray.length; i++) {
     var movieTitle = document.createElement("li");
+    movieTitle.setAttribute("class", "listallul");
     movieTitle.setAttribute("id", "alltitles" + i); //id's are never used possibly redundant?
     allTitlesUl.appendChild(movieTitle);
     movieTitle.innerText = (movieArray[i]);
     movieTitle.addEventListener("click", listAllDetails);
+    movieTitle.addEventListener("mouseenter", (Event) => { //change colour of list item when mouse hovers over
+      Event.target.style.color = "rgb(146,177,180)";     
+    })
+    movieTitle.addEventListener("mouseleave", (Event) => { //reset once mouse leaves    
+      setTimeout(() => {
+        Event.target.style.color = "";
+      }, 25);
+    }
+    )
+    movieTitle.style.animation = ("listallanim 2500ms");    
+    movieTitle.style.animationDelay = 300*i+"ms";
   }
 }
 

@@ -39,7 +39,7 @@ let movieData = {
 // Can I allow for new properties in object while keeping preffered order?? Want to add star rating and seen already 
 var movieDataProperties = ["plot", "cast", "rating", "runtime", "year"]
 //variables for alphebtical sort
-let sortToggle = false;
+let sortToggle = true;
 let movieArray = Object.keys(movieData);
 
 //initialise dom variables
@@ -94,10 +94,15 @@ function filmChoice(title) {
 /* Lists titles of all films in database and sets up to list details of a chosen title */
 function listAllFunc() {
   clearAll();
-  listAllButton.innerText = ("Sort alphabetically");
+  //change list all button to alphebetical sort
+  if (sortToggle){
+  listAllButton.innerText = ("Sort alphabetically ↓");
+  }
+  else {
+    listAllButton.innerText = ("Sort alphabetically ↑")
+  }
   listAllButton.removeEventListener("click", listAllFunc);
   listAllButton.addEventListener("click", sortFilmsMinusThe);
-  //movieArray = Object.keys(movieData);
   for (i = 0; i < movieArray.length; i++) {
     var movieTitle = document.createElement("li");
     movieTitle.setAttribute("class", "listallul");
@@ -161,7 +166,7 @@ function submitNewFilmFunc(Event) {
   movieData[newTitle] = newTitleObject; 
   newFilmProperties[0].value = ""; //reset form inputs to placeholder values
   clearAll();
-  sortFilmsMinusThe();
+  movieArray = Object.keys(movieData)
   //Ideally add data sanitization and refuse incorrectly formated data
   //could be cleaned up definetly some redundant/unnecesary variables in here
 }
@@ -172,7 +177,6 @@ function clearAll() {
   listAllButton.innerText = ("List all films");
   listAllButton.addEventListener("click", listAllFunc);
   listAllButton.removeEventListener("click", sortFilmsMinusThe);
-  sortToggle = true;
   allTitlesUl.textContent = " ";
   randomMovie.textContent = " ";
   randomMovList.textContent = " ";
@@ -182,33 +186,45 @@ function clearAll() {
 
 
 
-/* Alphebetical sort */
+/* Alphebetical sort a-z/z-a*/
 function sortFilmsMinusThe () {
   const filterOutThe = "The "
   let alphebeticalMovieArray = [];
   movieArray = Object.keys(movieData);
   for (i = 0; i < movieArray.length; i++){
   let currentFilm = movieArray[i];
-  //if title starts with 'The' remove it from title and add title to array
+  //if title starts with 'The' remove it from title and add title to array otherwise add title to array
   if (currentFilm.startsWith(filterOutThe)) {
       alphebeticalMovieArray.splice(i,1, currentFilm.replace(filterOutThe, ""));
-      alphebeticalMovieArray[i] = alphebeticalMovieArray[i].concat("changeme");
+      alphebeticalMovieArray[i] = alphebeticalMovieArray[i].concat("changeme"); //give titles with 'The' an easy identifier so it can be added back in
   }
   else {
       alphebeticalMovieArray.push(movieArray[i])
   }
   }
-  alphebeticalMovieArray.sort();
+  //sort array in alphebetical order ignoring case
+  alphebeticalMovieArray.sort(function (a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  })
+  //toggle to check if sorted a-z or z-a
+  if (sortToggle)
+    {
+     sortToggle = false;
+      
+  }
+  else{
+    alphebeticalMovieArray.reverse();  //reverse order of array - sort z-a
+    sortToggle = true;
+  }
+   
   //add 'The' back to relevant titles
   for (i = 0; i < movieArray.length; i++){
-      if (alphebeticalMovieArray[i].endsWith("changeme")){
+      if (alphebeticalMovieArray[i].endsWith("changeme")){            //find titles that had 'The' removed and add back in
           alphebeticalMovieArray[i] = alphebeticalMovieArray[i].replace("changeme", "");
           alphebeticalMovieArray[i] = filterOutThe.concat(alphebeticalMovieArray[i]);
       }
   }
-  console.log("sort alpha");
   movieArray = alphebeticalMovieArray;
-  console.log(movieArray);
   listAllFunc();
 }
 /* TO DO!!
